@@ -12,7 +12,11 @@
         android:layout_height="wrap_content"
         android:text="LogIn"
         tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="320dp" />
+        tools:layout_editor_absoluteY="320dp"
+        android:onClick="logIn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/signUpButton"
+        android:layout_marginBottom="123dp" />
 
     <Button
         android:id="@+id/signUpButton"
@@ -20,5 +24,9 @@
         android:layout_height="wrap_content"
         android:text="SignUp"
         tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="156dp" />
+        tools:layout_editor_absoluteY="156dp"
+        android:onClick="signUp"
+        android:layout_marginBottom="140dp"
+        android:layout_above="@+id/logInButton"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
