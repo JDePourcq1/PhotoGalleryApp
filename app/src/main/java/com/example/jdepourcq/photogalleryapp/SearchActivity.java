@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -15,6 +16,8 @@ public class SearchActivity extends AppCompatActivity {
 
     public void search(View view) {
         Intent intent = new Intent(this, GalleryActivity.class);
+        EditText editText = (EditText)findViewById(R.id.location);
+        intent.putExtra("location", editText.getText().toString());
         startActivity(intent);
     }
 }
