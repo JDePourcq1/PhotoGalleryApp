@@ -17,7 +17,10 @@ public class SearchActivity extends AppCompatActivity {
     public void search(View view) {
         Intent intent = new Intent(this, GalleryActivity.class);
         EditText editText = (EditText)findViewById(R.id.location);
+        intent.putExtra("type", "search");
         intent.putExtra("location", editText.getText().toString());
+        EditText keyword = (EditText) findViewById(R.id.keyword);
+        intent.putExtra("description", keyword.getText().toString());
         startActivity(intent);
     }
 }

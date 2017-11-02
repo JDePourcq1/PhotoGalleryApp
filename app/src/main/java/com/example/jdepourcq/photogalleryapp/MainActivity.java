@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void logIn(View view) {
         Intent intent = new Intent(this, GalleryActivity.class);
-        intent.putExtra("location", "start");
+        intent.putExtra("type", "start");
         startActivity(intent);
     }
 

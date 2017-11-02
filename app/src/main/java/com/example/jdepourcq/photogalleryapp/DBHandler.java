@@ -17,12 +17,15 @@ public class DBHandler extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
-    private static final String DATABASE_NAME = "pictureInfo";
+    private static final String DATABASE_NAME = "pictureHolder";
     // Contacts table name
     private static final String TABLE_PICTURE = "pictures";
     // Shops Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_LOCATION = "location";
+    private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_IMAGE = "image";
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,9 +34,8 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PICTURE);
-        db.execSQL("delete from " + TABLE_PICTURE);
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_PICTURE + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LOCATION + " TEXT)";
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_IMAGE + " IMAGE," + KEY_LOCATION + " LOCATION," + KEY_DESCRIPTION + " DESCRIPTION," + KEY_DATE + " DATE)" ;
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
@@ -48,8 +50,10 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addPicture(Pictures picture) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_LOCATION, picture.getLocation()); // Shop Name
-// Inserting Row
+        values.put(KEY_IMAGE, picture.getPicture());
+        values.put(KEY_LOCATION, picture.getLocation());
+        values.put(KEY_DESCRIPTION, picture.getDescription());
+        values.put(KEY_DATE, picture.getDate());
         db.insert(TABLE_PICTURE, null, values);
         db.close(); // Closing database connection
     }
@@ -65,7 +69,10 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Pictures shop = new Pictures();
                 shop.setId(Integer.parseInt(cursor.getString(0)));
-                shop.setLocation(cursor.getString(1));
+                shop.setPicture(cursor.getBlob(1));
+                shop.setLocation(cursor.getString(2));
+                shop.setDescription(cursor.getString(3));
+                shop.setDate(cursor.getString(4));
 // Adding contact to list
                 shopList.add(shop);
             } while (cursor.moveToNext());
@@ -74,7 +81,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return shopList;
     }
 
-    public List<Pictures> getCertainPictures(String location) {
+    public List<Pictures> getLocationPictures(String location) {
         List<Pictures> shopList = new ArrayList<Pictures>();
 // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_PICTURE + " WHERE " + KEY_LOCATION + " = '" + location + "'";
@@ -85,7 +92,56 @@ public class DBHandler extends SQLiteOpenHelper {
             do {
                 Pictures shop = new Pictures();
                 shop.setId(Integer.parseInt(cursor.getString(0)));
-                shop.setLocation(cursor.getString(1));
+                shop.setPicture(cursor.getBlob(1));
+                shop.setLocation(cursor.getString(2));
+                shop.setDescription(cursor.getString(3));
+                shop.setDate(cursor.getString(4));
+// Adding contact to list
+                shopList.add(shop);
+            } while (cursor.moveToNext());
+        }
+// return contact list
+        return shopList;
+    }
+
+    public List<Pictures> getDescriptionPictures(String descrip) {
+        List<Pictures> shopList = new ArrayList<Pictures>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_PICTURE + " WHERE " + KEY_DESCRIPTION + " LIKE '%" + descrip + "%'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Pictures shop = new Pictures();
+                shop.setId(Integer.parseInt(cursor.getString(0)));
+                shop.setPicture(cursor.getBlob(1));
+                shop.setLocation(cursor.getString(2));
+                shop.setDescription(cursor.getString(3));
+                shop.setDate(cursor.getString(4));
+// Adding contact to list
+                shopList.add(shop);
+            } while (cursor.moveToNext());
+        }
+// return contact list
+        return shopList;
+    }
+
+    public List<Pictures> getDescriptionLocationPictures(String location, String descrip) {
+        List<Pictures> shopList = new ArrayList<Pictures>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_PICTURE + " WHERE " + KEY_DESCRIPTION + " LIKE '%" + descrip + "%' AND " + KEY_LOCATION + " = '" + location + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Pictures shop = new Pictures();
+                shop.setId(Integer.parseInt(cursor.getString(0)));
+                shop.setPicture(cursor.getBlob(1));
+                shop.setLocation(cursor.getString(2));
+                shop.setDescription(cursor.getString(3));
+                shop.setDate(cursor.getString(4));
 // Adding contact to list
                 shopList.add(shop);
             } while (cursor.moveToNext());
